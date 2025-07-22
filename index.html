@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Error del Sistema</title>
+    <style>
+        /* Estilos para simular la pantalla de error */
+        body, html {
+            height: 100%;
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #0078D4; /* Azul típico de Windows */
+            color: #ffffff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            overflow: hidden;
+        }
+        .container {
+            width: 90%;
+            max-width: 800px;
+        }
+        /* Contenido de la broma inicial */
+        #contenido-broma {
+            display: block;
+        }
+        h1 {
+            font-size: 2em;
+            font-weight: 300;
+        }
+        p {
+            font-size: 1.2em;
+        }
+        .barra-progreso {
+            width: 100%;
+            background-color: #333;
+            border-radius: 5px;
+            margin: 30px 0;
+            border: 2px solid #fff;
+        }
+        .relleno-progreso {
+            height: 30px;
+            width: 0%;
+            background-color: #00ff00;
+            transition: width 0.2s linear;
+        }
+        /* Contenido revelado al final */
+        #revelacion-broma {
+            display: none;
+            animation: fadeIn 2s;
+        }
+        #revelacion-broma h1 {
+            font-size: 3.5em;
+            font-weight: 700;
+            color: #FFFF00; /* Amarillo para resaltar */
+        }
+        .emoji {
+            font-size: 6em;
+            margin-bottom: 20px;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div id="contenido-broma">
+            <div class="emoji" style="font-size: 7em;">:(</div>
+            <h1>Tu PC tuvo un problema y necesita reiniciarse.</h1>
+            <p>Estamos recopilando información sobre el error y después se reiniciará.</p>
+            <div class="barra-progreso">
+                <div class="relleno-progreso" id="barra"></div>
+            </div>
+            <p><span id="porcentaje">0</span>% completado</p>
+        </div>
+
+        <div id="revelacion-broma">
+            <div class="emoji">🤣</div>
+            <h1>¡CAÍSTE!</h1>
+            <h1 style="font-size: 4em;">"Brochita"</h1>
+                    <p>Tranquilo, tu computadora está perfectamente bien.</p>
+                    </div>
+    </div>
+
+    <script>
+        const barra = document.getElementById('barra');
+        const porcentaje = document.getElementById('porcentaje');
+        const contenidoBroma = document.getElementById('contenido-broma');
+        const revelacionBroma = document.getElementById('revelacion-broma');
+        let progreso = 0;
+
+        // Ocultar el cursor para que parezca más real
+        document.body.style.cursor = 'none';
+
+        // Animar la barra de progreso
+        const intervalo = setInterval(() => {
+            if (progreso >= 100) {
+                clearInterval(intervalo);
+                // Cambiar al mensaje final
+                contenidoBroma.style.display = 'none';
+                revelacionBroma.style.display = 'block';
+                document.body.style.cursor = 'default'; // Mostrar el cursor de nuevo
+            } else {
+                // Incrementar el progreso de forma aleatoria
+                progreso += Math.floor(Math.random() * 4) + 1;
+                progreso = Math.min(progreso, 100); // No pasar de 100
+                barra.style.width = progreso + '%';
+                porcentaje.textContent = progreso;
+            }
+        }, 300); // Velocidad de la barra
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Encuesta Completada</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="estilo-formularios.css">
+  <style>
+    body {
+      background-color: #f4f7f9;
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .mensaje {
+      background: #ffffff;
+      padding: 40px 50px;
+      border-radius: 10px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      text-align: center;
+      max-width: 500px;
+    }
+
+    .mensaje h1 {
+      color: #043b71;
+      font-size: 24px;
+      margin-bottom: 20px;
+    }
+
+    .mensaje p {
+      color: #555;
+      font-size: 16px;
+      line-height: 1.5;
+    }
+
+    .mensaje .btn {
+      display: inline-block;
+      margin-top: 30px;
+      padding: 12px 24px;
+      background-color: #043b71;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      font-weight: bold;
+      text-decoration: none;
+      transition: background-color 0.3s ease;
+    }
+
+    .mensaje .btn:hover {
+      background-color: #012c55;
+    }
+  </style>
+  <script>
+    // Limpiar cualquier dato del localStorage
+    localStorage.clear();
+
+    // Bloquear botón "Atrás"
+    history.pushState(null, '', location.href);
+    window.addEventListener('popstate', function () {
+      history.pushState(null, '', location.href);
+    });
+  </script>
+</head>
+<body>
+  <div class="mensaje">
+    <h1>¡Gracias por tu participación! 🎉</h1>
+    <p>Tu encuesta ha sido enviada exitosamente.<br>
+    Tus respuestas son muy valiosas para nosotros.</p>
+
+    <a class="btn" href="login.html">Cerrar sesión</a>
+  </div>
+</body>
+</html>

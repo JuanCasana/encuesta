@@ -1,0 +1,549 @@
+/*────────────────────────────────────────────────────────*/
+/* 1) RESET + BASE                                              */
+/*────────────────────────────────────────────────────────*/
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background: #F2F2F2;
+    line-height: 1.5;
+    padding: 20px;
+    overflow-x: hidden;
+}
+
+.container {
+    width: 90vw;
+    max-width: 600px;
+    margin: auto;
+    background: #FFF;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+    text-align: center;
+    color: #003366;
+    margin-bottom: 20px;
+}
+/*────────────────────────────────────────────────────────*/
+/* BARRA PROGRESO                                           */
+/*────────────────────────────────────────────────────────*/
+.progress-wrapper {
+    max-width: 800px;
+    margin: 10px auto 30px;
+}
+
+.progress-container {
+    width: 100%;
+    background-color: #eee;
+    height: 25px;
+    border-radius: 10px;
+    overflow: hidden;
+    position: relative;
+}
+
+.progress-bar {
+    height: 100%;
+    background: linear-gradient(to right, #0073e6, #00c6ff);
+    width: 0%;
+    transition: width 0.3s ease-in-out;
+}
+
+.progress-text {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    color: #fff;
+    font-size: 14px;
+    line-height: 25px;
+    font-weight: bold;
+    text-shadow: 1px 1px 2px #000;
+}
+
+.step {
+    display: none;
+}
+
+.step.active {
+    display: block;
+}
+
+.nav-buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.container {
+    max-width: 800px;
+    margin: auto;
+    padding: 0 15px;
+}
+
+
+
+/*────────────────────────────────────────────────────────*/
+/* 2) MULTISTEP FORM                                            */
+/*────────────────────────────────────────────────────────*/
+form {
+    display: block;
+}
+
+.step {
+    display: none;
+}
+
+.step.active {
+    display: block;
+}
+
+/*────────────────────────────────────────────────────────*/
+/* 3) FIELDSETS & LEGENDS                                  */
+/*────────────────────────────────────────────────────────*/
+fieldset {
+    border: none;
+    margin-bottom: 20px;
+}
+
+legend {
+    font-weight: bold;
+    color: #003366;
+    margin-bottom: 10px;
+    text-align: left;
+}
+
+/*────────────────────────────────────────────────────────*/
+/* 4) LABELS, P, INPUTS, SELECT, TEXTAREA, BUTTON         */
+/*────────────────────────────────────────────────────────*/
+label,
+p {
+    display: block;
+    text-align: left;
+    margin-bottom: 5px;
+    color: #333;
+}
+
+input,
+select,
+textarea,
+button {
+    width: 100%;
+    max-width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1rem;
+    background: #fff;
+    color: #333;
+}
+
+/*────────────────────────────────────────────────────────*/
+/* 5) RADIOS & CHECKBOXES                                  */
+/*────────────────────────────────────────────────────────*/
+input[type="radio"],
+input[type="checkbox"] {
+    width: auto;
+    margin-right: 8px;
+    vertical-align: middle;
+    accent-color: #003366;
+}
+
+/* option-group para alinear input + texto */
+.option-group {
+    margin-bottom: 10px;
+}
+
+.option-group .option-label {
+    display: flex;
+    align-items: center;
+    gap: 0.5em;
+    padding: 6px 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background .2s, border-color .2s;
+    margin-bottom: 6px;
+}
+
+.option-group .option-label:hover {
+    background: #f0f8ff;
+}
+
+.option-group .option-label.invalid {
+    border-color: red;
+}
+
+/*────────────────────────────────────────────────────────*/
+/* 6) SELECT con flecha SVG                                */
+/*────────────────────────────────────────────────────────*/
+select {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background-image: url("data:image/svg+xml;charset=US-ASCII,\
+%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E\
+%3Cpath fill='%23336699' d='M0 0l5 6 5-6z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 10px 6px;
+    padding-right: 30px;
+}
+
+/*────────────────────────────────────────────────────────*/
+/* 7) BOTONES                                               */
+/*────────────────────────────────────────────────────────*/
+button {
+    background: #003366;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background .3s;
+}
+
+button:hover {
+    background: #336699;
+}
+
+/*────────────────────────────────────────────────────────*/
+/* 8) VALIDACIÓN on-demand                                 */
+/*────────────────────────────────────────────────────────*/
+/* solo tras click en Next/Submit se añade .invalid */
+.invalid {
+    border-color: red !important;
+    background-color: #ffe6e6;
+}
+
+.invalid+.invalid-message {
+    display: block;
+}
+
+.invalid-message {
+    display: none;
+    color: red;
+    font-size: 0.9rem;
+    margin-top: -10px;
+    margin-bottom: 10px;
+}
+
+/*────────────────────────────────────────────────────────*/
+/* 9) OCULTAR BLOQUES                                      */
+/*────────────────────────────────────────────────────────*/
+.oculto {
+    display: none;
+}
+
+/*────────────────────────────────────────────────────────*/
+/* 10) NAVEGACIÓN multistep                                */
+/*────────────────────────────────────────────────────────*/
+.nav-buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+}
+
+.nav-buttons button {
+    flex: 1;
+    margin: 0 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    padding: 10px 0;
+}
+
+.nav-buttons button.back::before {
+    content: "←";
+    margin-right: 8px;
+}
+
+.nav-buttons button.next::after {
+    content: "→";
+    margin-left: 8px;
+}
+
+/*────────────────────────────────────────────────────────*/
+/* 11) RESPONSIVE                                          */
+/*────────────────────────────────────────────────────────*/
+@media (min-width: 768px) {
+    .container {
+        padding: 30px;
+    }
+}
+
+@media (min-width: 1024px) {
+    body {
+        padding: 40px;
+    }
+}
+
+@media (max-width: 480px) {
+    select {
+        font-size: .95rem;
+        padding: 8px 28px 8px 10px;
+    }
+}
+/*────────────────────────────────────────────────────────*/
+/* 12) AUTHENTICACIÓN (LOGIN Y REGISTRO ANIMADO)          */
+/*────────────────────────────────────────────────────────*/
+
+/* Contenedor general del sistema de login/registro */
+.auth-container {
+    width: 90vw;
+    max-width: 800px;
+    margin: auto;
+    position: relative;
+    overflow: hidden;
+    border-radius: 12px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+}
+
+/* Envoltura que controla la animación del panel */
+.auth-wrapper {
+    width: 100%;
+}
+
+/* Contenedor interno que se desliza */
+.panel {
+    display: flex;
+    width: 200%;
+    transition: transform 0.6s ease-in-out;
+}
+
+/* Activación: desplaza el panel hacia la izquierda */
+.auth-wrapper.active .panel {
+    transform: translateX(-50%);
+}
+
+/* Sección del formulario (login o registro) */
+.form-section {
+    width: 50%;
+    padding: 30px;
+    background: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+/* Título del formulario */
+.form-section h2 {
+    text-align: center;
+    color: #003366;
+    margin-bottom: 20px;
+}
+
+/* Sección visual para mostrar el logo institucional */
+.image-section {
+    width: 50%;
+    background: linear-gradient(135deg, #003366, #336699);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 1.5rem;
+    padding: 30px;
+    text-align: center;
+}
+
+/* Estilo del logo institucional */
+.image-section img.logo {
+    max-width: 120px;
+    margin-bottom: 10px;
+}
+
+/* Texto alternativo para cambiar entre login y registro */
+.toggle-button {
+    margin-top: 10px;
+    text-align: center;
+    font-size: 0.95rem;
+}
+
+.toggle-button a {
+    color: #003366;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+/* Responsivo para móviles: coloca panel en columnas */
+@media (max-width: 768px) {
+    .panel {
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .form-section,
+    .image-section {
+        width: 100%;
+    }
+
+    .auth-wrapper.active .panel {
+        transform: none;
+    }
+}
+
+/*────────────────────────────────────────────────────────*/
+/* Login Panel – IESTP Cesar Augusto Guardía Mayorga      */
+/*────────────────────────────────────────────────────────*/
+
+/* Contenedor principal centrado en pantalla */
+.login-wrapper {
+    display: flex;
+    max-width: 800px;
+    height: 75vh;
+    /* Altura: 75% de pantalla */
+    margin: auto;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+
+/* Lado izquierdo – sección institucional con logo */
+.logo-side {
+    flex: 1;
+    background: linear-gradient(135deg, #003366, #336699);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 30px;
+    color: white;
+    text-align: center;
+    height: 100%;
+    /* igual altura que login-wrapper */
+}
+
+.logo-side img {
+    max-width: 140px;
+    margin-bottom: 15px;
+}
+
+.logo-side h3 {
+    font-size: 1.1rem;
+    line-height: 1.4;
+    margin: 0;
+}
+
+/* Lado derecho – formulario de login */
+.login-form {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 40px 30px;
+    height: 100%;
+}
+
+.login-form h2 {
+    text-align: center;
+    color: #003366;
+    margin-bottom: 20px;
+}
+
+.login-form p {
+    text-align: center;
+    margin-top: 10px;
+}
+
+/* Enlaces dentro del formulario */
+.login-form a {
+    color: #003366;
+    text-decoration: underline;
+}
+
+/* Botón de enviar (ya estilizado en sección 7 general) */
+/* Se hereda de tu regla: button { background: #003366 ... } */
+
+/* Responsive: móvil y tablet */
+@media (max-width: 768px) {
+    .login-wrapper {
+        flex-direction: column;
+        height: auto;
+    }
+
+    .logo-side {
+        order: -1;
+        height: auto;
+    }
+
+    .login-form {
+        padding: 30px 20px;
+    }
+
+    .logo-side img {
+        max-width: 100px;
+    }
+}
+
+/*────────────────────────────────────────────────────────*/
+/* Ajustes layout: form izquierda + logo derecha         */
+/*────────────────────────────────────────────────────────*/
+.login-wrapper {
+    display: flex;
+    max-width: 800px;
+    height: 75vh;
+    margin: auto;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+
+.login-form {
+    flex: 1;
+    order: 1;
+    /* primero el formulario */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 40px 30px;
+}
+
+.logo-side {
+    flex: 1;
+    order: 2;
+    /* después el logo */
+    background: linear-gradient(135deg, #003366, #336699);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 30px;
+    color: white;
+    text-align: center;
+}
+#egresado-info {
+      text-align: center;
+    font-size: 1.5em;
+    font-weight: bold;
+    color: #043b71;
+    margin-top: 5px;
+    margin-bottom: 25px;
+    }
+.nombre-egresado {
+  text-align: center;
+  font-size: 1.5em;
+  font-weight: bold;
+  color: #043b71;
+  margin-top: 5px;
+  margin-bottom: 25px;
+}
+
+#nombreEgresado {
+  display: none;
+}
+.nombre-egresado {
+  display: none;
+}
+/
+
+

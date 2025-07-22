@@ -1,0 +1,815 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <title>Encuesta a Egresados</title>
+    <link rel="stylesheet" href="estilo-formularios.css" />
+  </head>
+  <body>
+      
+    <div class="container">
+      <h2>Encuesta a Egresados</h2>
+      
+      <div id="egresado-info"></div>
+      <div class="progress-wrapper">
+        <div class="progress-container">
+          <div class="progress-bar" id="progressBar"></div>
+          <div class="progress-text" id="progressText">0%</div>
+        </div>
+      </div>
+      <form
+        id="encuesta"
+        method="POST"
+        action="procesar_encuesta.php"
+        novalidate
+      >
+        <!-- Paso 1: Datos personales (1–6) -->
+        <div class="step active" data-step="1">
+          <fieldset>
+            <legend>Datos personales</legend>
+
+            <label for="correo">Correo electrónico *</label>
+            <input
+              type="email"
+              id="correo"
+              name="correo"
+              required
+              pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
+              title="usuario@dominio.extensión"
+            />
+            <div class="invalid-message">
+              Formato: usuario@dominio.extensión.
+            </div>
+
+            <label for="nombre">Apellidos y Nombres *</label>
+            <input type="text" id="nombre" name="nombre" disabled  />
+            <div class="invalid-message">Este campo es obligatorio.</div>
+
+            <label for="dni">DNI / CE * (8 dígitos)</label>
+            <input type="text" id="dni" name="dni" pattern="^\d{8}$" readonly />
+            <div class="invalid-message">DNI inválido.</div>
+
+            <label for="celular">Nº de Celular * (9 dígitos)</label>
+            <input type="text" id="celular" name="celular" pattern="^\d{9}$" required />
+            <div class="invalid-message">Celular inválido.</div>
+            
+            <label for="direccion">Dirección Domiciliaria *</label>
+            <input type="text" id="direccion" name="direccion" required />
+            <div class="invalid-message">Este campo es obligatorio.</div>
+
+            <label for="distrito">Distrito donde reside *</label>
+            <input type="text" id="distrito" name="distrito" required />
+            <div class="invalid-message">Este campo es obligatorio.</div>
+            <label for="programa">Programa de Estudios *</label>
+            <select id="programa" name="programa" required>
+              <option value="">-- elige --</option>
+              <option value="arquitectura">Arquitectura de Plataformas</option>
+              <option value="asistencia">Asistencia Administrativa</option>
+              <option value="computacion">Computación e Informática</option>
+              <option value="construccion">Construcción Civil</option>
+              <option value="enfermeria">Enfermería Técnica</option>
+              <option value="produccion">Producción Agropecuaria</option>
+              <option value="secretariado">Secretariado Ejecutivo</option>
+            </select>
+            <div class="invalid-message">Seleccione una opción.</div>
+            <label for="anio_egreso">Año de Egreso *</label>
+            <select id="anio_egreso" name="anio_egreso" required>
+              <option value="">-- elige --</option>
+              <!-- Puedes ajustar el rango según necesidad -->
+              <script>
+                const anioSelect = document.getElementById("anio_egreso");
+                for (let y = 2025; y >= 1989; y--) {
+                  const opt = document.createElement("option");
+                  opt.value = y;
+                  opt.textContent = y;
+                  anioSelect.appendChild(opt);
+                }
+              </script>
+            </select>
+            <div class="invalid-message">Seleccione un año.</div>
+          </fieldset>
+
+          <div class="nav-buttons">
+            <button type="button" class="back" disabled>Anterior</button>
+            <button type="button" id="next-1" class="next">Siguiente</button>
+          </div>
+        </div>
+
+        <!-- Paso 2: Inserción laboral (7–21) -->
+        <div class="step" data-step="2">
+          <fieldset>
+            <legend>Inserción laboral</legend>
+
+            <p>¿Actualmente trabaja? *</p>
+            <div class="option-group">
+              <label class="option-label">
+                <input type="radio" name="trabaja" value="si" required />
+                <span class="label-text">Sí</span>
+              </label>
+              <label class="option-label">
+                <input type="radio" name="trabaja" value="no" />
+                <span class="label-text">No</span>
+              </label>
+            </div>
+            <div class="invalid-message">Seleccione una opción.</div>
+
+            <!-- Si trabaja -->
+            <div id="labora" class="oculto">
+              <label for="ingreso">Ingreso promedio *</label>
+              <select id="ingreso" name="ingreso" data-req="true" required>
+                <option value="">-- elige --</option>
+                <option value="menor">Menor al mínimo vital</option>
+                <option value="igual">Igual al mínimo vital</option>
+                <option value="mayor1">Mayor a un mínimo vital</option>
+                <option value="mayor2">Mayor a 2 mínimos vitales</option>
+                <option value="mayor3">Mayor a 3 mínimos vitales</option>
+              </select>
+              <div class="invalid-message">Seleccione una opción.</div>
+
+              <label for="empresa">Nombre de la empresa *</label>
+              <input
+                type="text"
+                id="empresa"
+                name="empresa"
+                data-req="true"
+                required
+              />
+              <div class="invalid-message">Este campo es obligatorio.</div>
+
+              <label for="empresa_contacto">Contacto empresa *</label>
+              <input
+                type="text"
+                id="empresa_contacto"
+                name="empresa_contacto"
+                data-req="true"
+                required
+              />
+              <div class="invalid-message">Este campo es obligatorio.</div>
+
+              <p>Tipo de empresa *</p>
+              <div class="option-group">
+                <label class="option-label">
+                  <input
+                    type="radio"
+                    name="tipo_empresa"
+                    value="estatal"
+                    data-req="true"
+                    required
+                  />
+                  <span class="label-text">Estatal</span>
+                </label>
+                <label class="option-label">
+                  <input type="radio" name="tipo_empresa" value="privada" />
+                  <span class="label-text">Privada</span>
+                </label>
+                <label class="option-label">
+                  <input type="radio" name="tipo_empresa" value="propia" />
+                  <span class="label-text">Propia</span>
+                </label>
+              </div>
+              <div class="invalid-message">Seleccione una opción.</div>
+
+              <label for="rubro">Actividad / Rubro *</label>
+              <select id="rubro" name="rubro" data-req="true" required>
+                <option value="">-- elige --</option>
+                <option value="agricultura">
+                  Agricultura, silvicultura y pesca
+                </option>
+                <option value="mineria">Minas, petróleo y canteras</option>
+                <option value="manufactura">Industrias manufactureras</option>
+                <option value="servicios_basicos">
+                  Electricidad, gas y agua
+                </option>
+                <option value="construccion">Construcción</option>
+                <option value="comercio_mayor">Comercio por mayor</option>
+                <option value="comercio_menor">Comercio por menor</option>
+                <option value="restaurantes">Restaurantes y cafés</option>
+                <option value="hoteles">Hoteles y alojamientos</option>
+                <option value="transporte">Transporte y comunicaciones</option>
+                <option value="finanzas">Finanzas y seguros</option>
+                <option value="servicios_estatales">
+                  Servicios estatales y educación
+                </option>
+                <option value="servicios_medicos">
+                  Servicios médicos y veterinarios
+                </option>
+                <option value="entretenimiento">
+                  Entretenimiento y cultura
+                </option>
+                <option value="servicios_personales">
+                  Servicios personales
+                </option>
+                <option value="otros">Otros</option>
+              </select>
+              <div class="invalid-message">Seleccione una opción.</div>
+
+              <p>¿El área donde laboras corresponde a? *</p>
+              <div class="option-group">
+                <label class="option-label">
+                  <input
+                    type="radio"
+                    name="area_corresponde"
+                    value="especialidad"
+                    data-req="true"
+                    required
+                  />
+                  <span class="label-text">Especialidad</span>
+                </label>
+                <label class="option-label">
+                  <input
+                    type="radio"
+                    name="area_corresponde"
+                    value="relacionada"
+                  />
+                  <span class="label-text">Relacionado</span>
+                </label>
+                <label class="option-label">
+                  <input
+                    type="radio"
+                    name="area_corresponde"
+                    value="diferente"
+                  />
+                  <span class="label-text">Diferente</span>
+                </label>
+              </div>
+              <div class="invalid-message">Seleccione una opción.</div>
+
+              <label for="cargo">Cargo que ocupas *</label>
+              <select id="cargo" name="cargo" data-req="true" required>
+                <option value="">-- elige --</option>
+                <option value="gerente">Gerente o Director</option>
+                <option value="administrativo">
+                  Administrador/Técnico Admin.
+                </option>
+                <option value="sistemas">Jefe de Sistemas/Soporte</option>
+                <option value="secretaria">Secretaria/Recepcionista</option>
+                <option value="contador">Contador/Aux. Contable</option>
+                <option value="disenador">Diseñador Gráfico/Publicista</option>
+                <option value="marketero">Marketero/Analista</option>
+                <option value="cajero">Cajero/Tesorero</option>
+                <option value="docente">Docente/Instructor</option>
+                <option value="otros">Otros</option>
+              </select>
+              <div class="invalid-message">Seleccione una opción.</div>
+
+              <p>Forma de contrato *</p>
+              <div class="option-group">
+                <label class="option-label">
+                  <input
+                    type="radio"
+                    name="contrato"
+                    value="nombrado"
+                    data-req="true"
+                    required
+                  />
+                  <span class="label-text">Nombrado</span>
+                </label>
+                <label class="option-label">
+                  <input type="radio" name="contrato" value="permanente" />
+                  <span class="label-text">Perm. permanente</span>
+                </label>
+                <label class="option-label">
+                  <input type="radio" name="contrato" value="temporal" />
+                  <span class="label-text">Temporal</span>
+                </label>
+                <label class="option-label">
+                  <input type="radio" name="contrato" value="autoempleo" />
+                  <span class="label-text">Autoempleo</span>
+                </label>
+                <label class="option-label">
+                  <input type="radio" name="contrato" value="informal" />
+                  <span class="label-text">Informal</span>
+                </label>
+              </div>
+              <div class="invalid-message">Seleccione una opción.</div>
+
+              <label for="tiempo_empresa">Tiempo en esta empresa *</label>
+              <select
+                id="tiempo_empresa"
+                name="tiempo_empresa"
+                data-req="true"
+                required
+              >
+                <option value="">-- elige --</option>
+                <option value="menos1">Menos de un mes</option>
+                <option value="1_6">1–6 meses</option>
+                <option value="6_12">6–12 meses</option>
+                <option value="1_2">1–2 años</option>
+                <option value="2_5">2–5 años</option>
+                <option value="mas5">Más de 5 años</option>
+              </select>
+              <div class="invalid-message">Seleccione una opción.</div>
+
+              <label for="empleos_tenidos"
+                >Nº de empleos desde egreso *</label
+              >
+              <select
+                id="empleos_tenidos"
+                name="empleos_tenidos"
+                data-req="true"
+                required
+              >
+                <option value="">-- elige --</option>
+                <option value="0">0</option>
+                <option value="1_2">1–2</option>
+                <option value="3_4">3–4</option>
+                <option value="5_6">5–6</option>
+                <option value="7_8">7–8</option>
+                <option value="9_mas">9 o más</option>
+              </select>
+              <div class="invalid-message">Seleccione una opción.</div>
+
+              <p>¿En anteriores empleos las labores eran? *</p>
+              <div class="option-group">
+                <label class="option-label">
+                  <input
+                    type="radio"
+                    name="labores_anteriores"
+                    value="iguales"
+                    data-req="true"
+                    required
+                  />
+                  <span class="label-text">Iguales</span>
+                </label>
+                <label class="option-label">
+                  <input
+                    type="radio"
+                    name="labores_anteriores"
+                    value="similares"
+                  />
+                  <span class="label-text">Similares</span>
+                </label>
+                <label class="option-label">
+                  <input
+                    type="radio"
+                    name="labores_anteriores"
+                    value="diferentes"
+                  />
+                  <span class="label-text">Diferentes</span>
+                </label>
+                <label class="option-label">
+                  <input
+                    type="radio"
+                    name="labores_anteriores"
+                    value="no_laboraban"
+                  />
+                  <span class="label-text">No laboraban</span>
+                </label>
+              </div>
+              <div class="invalid-message">Seleccione una opción.</div>
+            </div>
+
+            <!-- Si no trabaja -->
+            <div id="desempleo" class="oculto">
+              <label for="tiempo_sin_trabajar">Tiempo sin trabajar *</label>
+              <select
+                id="tiempo_sin_trabajar"
+                name="tiempo_sin_trabajar"
+                data-req="true"
+                required
+              >
+                <option value="">-- elige --</option>
+                <option value="menos1">Menos de un mes</option>
+                <option value="1_2">1–2 meses</option>
+                <option value="3_4">3–4 meses</option>
+                <option value="5_6">5–6 meses</option>
+                <option value="6_12">6–12 meses</option>
+                <option value="mas1">Más de un año</option>
+              </select>
+              <div class="invalid-message">Seleccione una opción.</div>
+
+              <p>Razón de desempleo *</p>
+              <div class="option-group">
+                <label class="option-label">
+                  <input
+                    type="radio"
+                    name="razon_no_trabaja"
+                    value="sin_oferta"
+                    data-req="true"
+                    required
+                  />
+                  <span class="label-text">No hallé oferta</span>
+                </label>
+                <label class="option-label">
+                  <input
+                    type="radio"
+                    name="razon_no_trabaja"
+                    value="estudiando"
+                  />
+                  <span class="label-text">Estudiando</span>
+                </label>
+                <label class="option-label">
+                  <input type="radio" name="razon_no_trabaja" value="rentas" />
+                  <span class="label-text">Con rentas</span>
+                </label>
+                <label class="option-label">
+                  <input type="radio" name="razon_no_trabaja" value="otros" />
+                  <span class="label-text">Otros</span>
+                </label>
+              </div>
+              <div class="invalid-message">Seleccione una opción.</div>
+
+              <div id="detalle_no_oferta" class="oculto">
+                <p>Detalle *</p>
+                <div class="option-group">
+                  <label class="option-label">
+                    <input
+                      type="radio"
+                      name="detalle_no_oferta"
+                      value="salud"
+                      data-req="true"
+                      required
+                    />
+                    <span class="label-text">Salud</span>
+                  </label>
+                  <label class="option-label">
+                    <input
+                      type="radio"
+                      name="detalle_no_oferta"
+                      value="familia"
+                    />
+                    <span class="label-text">Familia</span>
+                  </label>
+                  <label class="option-label">
+                    <input
+                      type="radio"
+                      name="detalle_no_oferta"
+                      value="viaje"
+                    />
+                    <span class="label-text">Viaje</span>
+                  </label>
+                  <label class="option-label">
+                    <input
+                      type="radio"
+                      name="detalle_no_oferta"
+                      value="habilidades"
+                    />
+                    <span class="label-text">Falta habilidades</span>
+                  </label>
+                  <label class="option-label">
+                    <input
+                      type="radio"
+                      name="detalle_no_oferta"
+                      value="competencia"
+                    />
+                    <span class="label-text">Competencia</span>
+                  </label>
+                </div>
+                <div class="invalid-message">Seleccione una opción.</div>
+              </div>
+            </div>
+          </fieldset>
+
+          <div class="nav-buttons">
+            <button type="button" class="back" id="back-2">Anterior</button>
+            <button type="button" class="next" id="next-2">Siguiente</button>
+          </div>
+        </div>
+
+        <!-- Paso 3: Evaluación de la formación (22–29) -->
+        <div class="step" data-step="3">
+          <fieldset>
+            <legend>Evaluación de la formación</legend>
+
+            <p>Formación profesional *</p>
+            <div class="option-group">
+              <label class="option-label">
+                <input
+                  type="radio"
+                  name="formacion_adecuada"
+                  value="muy_adecuada"
+                  data-req="true"
+                  required
+                />
+                <span class="label-text">Muy apropiada</span>
+              </label>
+              <label class="option-label">
+                <input
+                  type="radio"
+                  name="formacion_adecuada"
+                  value="adecuada"
+                />
+                <span class="label-text">Apropiada</span>
+              </label>
+              <label class="option-label">
+                <input type="radio" name="formacion_adecuada" value="regular" />
+                <span class="label-text">Regular</span>
+              </label>
+              <label class="option-label">
+                <input
+                  type="radio"
+                  name="formacion_adecuada"
+                  value="inapropiada"
+                />
+                <span class="label-text">Inapropiada</span>
+              </label>
+            </div>
+            <div class="invalid-message">Seleccione una opción.</div>
+
+            <p>¿Satisfecho con la formación? *</p>
+            <div class="option-group">
+              <label class="option-label">
+                <input
+                  type="radio"
+                  name="satisfecho"
+                  value="si"
+                  data-req="true"
+                  required
+                />
+                <span class="label-text">Sí</span>
+              </label>
+              <label class="option-label">
+                <input type="radio" name="satisfecho" value="no" />
+                <span class="label-text">No</span>
+              </label>
+            </div>
+            <div class="invalid-message">Seleccione una opción.</div>
+
+            <div id="insatisfaccion" class="oculto">
+              <p>Razones *</p>
+              <div class="option-group">
+                <label class="option-label">
+                  <input
+                    type="checkbox"
+                    name="razon_insatisfaccion[]"
+                    value="teoria_practica"
+                  />
+                  <span class="label-text">Falta teoría-práctica</span>
+                </label>
+                <label class="option-label">
+                  <input
+                    type="checkbox"
+                    name="razon_insatisfaccion[]"
+                    value="contenidos"
+                  />
+                  <span class="label-text">Contenido obsoleto</span>
+                </label>
+                <label class="option-label">
+                  <input
+                    type="checkbox"
+                    name="razon_insatisfaccion[]"
+                    value="recursos"
+                  />
+                  <span class="label-text">Recursos limitados</span>
+                </label>
+              </div>
+              <div class="invalid-message">Seleccione al menos una opción.</div>
+            </div>
+
+            <p>Califica tu trabajo *</p>
+            <div class="option-group">
+              <label class="option-label">
+                <input
+                  type="radio"
+                  name="autoeval_trabajo"
+                  value="excelente"
+                  data-req="true"
+                  required
+                />
+                <span class="label-text">Excelente</span>
+              </label>
+              <label class="option-label">
+                <input type="radio" name="autoeval_trabajo" value="bueno" />
+                <span class="label-text">Bueno</span>
+              </label>
+              <label class="option-label">
+                <input type="radio" name="autoeval_trabajo" value="regular" />
+                <span class="label-text">Regular</span>
+              </label>
+              <label class="option-label">
+                <input type="radio" name="autoeval_trabajo" value="malo" />
+                <span class="label-text">Malo</span>
+              </label>
+            </div>
+            <div class="invalid-message">Seleccione una opción.</div>
+
+            <p>¿Mejor preparado que otros? *</p>
+            <div class="option-group">
+              <label class="option-label">
+                <input
+                  type="radio"
+                  name="comparacion_otros"
+                  value="si"
+                  data-req="true"
+                  required
+                />
+                <span class="label-text">Sí</span>
+              </label>
+              <label class="option-label">
+                <input type="radio" name="comparacion_otros" value="no" />
+                <span class="label-text">No</span>
+              </label>
+            </div>
+            <div class="invalid-message">Seleccione una opción.</div>
+
+            <div id="razon_no_preparado" class="oculto">
+              <label for="detalle_no_preparado">¿Por qué? *</label>
+              <textarea
+                id="detalle_no_preparado"
+                name="detalle_no_preparado"
+                rows="3"
+                required
+              ></textarea>
+              <div class="invalid-message">Explique brevemente.</div>
+            </div>
+
+            <p>% conocimientos aplicados *</p>
+            <div class="option-group">
+              <label class="option-label">
+                <input
+                  type="radio"
+                  name="porcentaje_aplicado"
+                  value="100"
+                  data-req="true"
+                  required
+                />
+                <span class="label-text">100%</span>
+              </label>
+              <label class="option-label">
+                <input type="radio" name="porcentaje_aplicado" value="61_99" />
+                <span class="label-text">61–99%</span>
+              </label>
+              <label class="option-label">
+                <input type="radio" name="porcentaje_aplicado" value="31_60" />
+                <span class="label-text">31–60%</span>
+              </label>
+              <label class="option-label">
+                <input type="radio" name="porcentaje_aplicado" value="1_30" />
+                <span class="label-text">1–30%</span>
+              </label>
+              <label class="option-label">
+                <input type="radio" name="porcentaje_aplicado" value="0" />
+                <span class="label-text">0%</span>
+              </label>
+            </div>
+            <div class="invalid-message">Seleccione una opción.</div>
+
+            <p>¿Qué te falta? *</p>
+            <div class="option-group">
+              <label class="option-label">
+                <input
+                  type="checkbox"
+                  name="faltante[]"
+                  value="ninguno"
+                  data-req="true"
+                  required
+                />
+                <span class="label-text">Ninguno</span>
+              </label>
+              <label class="option-label">
+                <input type="checkbox" name="faltante[]" value="tecnologia" />
+                <span class="label-text">Tecnología informática</span>
+              </label>
+              <label class="option-label">
+                <input type="checkbox" name="faltante[]" value="secretarial" />
+                <span class="label-text">Técnicas secretariales</span>
+              </label>
+            </div>
+            <div class="invalid-message">Seleccione al menos una opción.</div>
+          </fieldset>
+
+          <div class="nav-buttons">
+            <button type="button" class="back" id="back-3">Anterior</button>
+            <button type="submit" class="next">Enviar encuesta</button>
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <script>
+document.addEventListener("DOMContentLoaded", () => {
+  const userData = JSON.parse(localStorage.getItem('userData'));
+  const nombreDiv = document.getElementById("nombreEgresado");
+
+if (userData) {
+  document.getElementById('correo').value = userData.email || '';
+  document.getElementById('celular').value = userData.celular || '';
+  document.getElementById('nombre').value = userData.nombre_completo || '';
+  document.getElementById('dni').value = userData.dni || '';
+}
+
+  // Paso actual
+  const steps = document.querySelectorAll(".step");
+  const progressBar = document.getElementById("progressBar");
+  const progressText = document.getElementById("progressText");
+  let current = 0;
+
+  const updateProgressBar = () => {
+    let percent = 0;
+    if (current === 1) percent = 33;
+    else if (current === 2) percent = 66;
+    progressBar.style.width = percent + "%";
+    progressText.textContent = percent + "%";
+  };
+
+  const showStep = (i) => {
+    steps.forEach((s, idx) => s.classList.toggle("active", idx === i));
+    current = i;
+    updateProgressBar();
+  };
+
+  const validateStep = (i) => {
+    let ok = true;
+    const fields = steps[i].querySelectorAll("input, select, textarea");
+    fields.forEach((f) => {
+      f.classList.remove("invalid");
+      if (f.required && !f.closest(".oculto") && !f.checkValidity()) {
+        f.classList.add("invalid");
+        ok = false;
+      }
+    });
+
+    const groups = steps[i].querySelectorAll(".option-group");
+    groups.forEach((g) => {
+      const anyChecked = [...g.querySelectorAll("input")].some(i => i.checked);
+      const msg = g.parentElement.querySelector(".invalid-message");
+      if (msg && !anyChecked && !g.closest(".oculto")) {
+        g.querySelectorAll(".option-label").forEach(l => l.classList.add("invalid"));
+        ok = false;
+      } else {
+        g.querySelectorAll(".option-label").forEach(l => l.classList.remove("invalid"));
+      }
+    });
+
+    return ok;
+  };
+
+  // Botones navegación
+  document.getElementById("next-1")?.addEventListener("click", () => {
+    if (validateStep(0)) showStep(1);
+  });
+
+  document.getElementById("back-2")?.addEventListener("click", () => showStep(0));
+  document.getElementById("next-2")?.addEventListener("click", () => {
+    if (validateStep(1)) showStep(2);
+  });
+
+  document.getElementById("back-3")?.addEventListener("click", () => showStep(1));
+
+  document.querySelectorAll("input, select, textarea").forEach(el => {
+    el.addEventListener("input", () => el.classList.remove("invalid"));
+  });
+
+  updateProgressBar();
+
+  // Mostrar/ocultar según condiciones
+  const trabajaInputs = document.querySelectorAll('input[name="trabaja"]');
+  const laboraDiv = document.getElementById("labora");
+  const desempleoDiv = document.getElementById("desempleo");
+  
+
+  trabajaInputs.forEach((input) => {
+    input.addEventListener("change", () => {
+      if (input.checked) {
+        if (input.value === "si") {
+          laboraDiv?.classList.remove("oculto");
+          desempleoDiv?.classList.add("oculto");
+        } else {
+          laboraDiv?.classList.add("oculto");
+          desempleoDiv?.classList.remove("oculto");
+        }
+      }
+    });
+  });
+
+  const razonInputs = document.querySelectorAll('input[name="razon_no_trabaja"]');
+  const detalleDiv = document.getElementById("detalle_no_oferta");
+  razonInputs.forEach((input) => {
+    input.addEventListener("change", () => {
+      if (input.checked && input.value === "sin_oferta") {
+        detalleDiv?.classList.remove("oculto");
+      } else {
+        detalleDiv?.classList.add("oculto");
+      }
+    });
+  });
+
+  const comparacionInputs = document.querySelectorAll('input[name="comparacion_otros"]');
+  const razonNoPrepDiv = document.getElementById("razon_no_preparado");
+  comparacionInputs.forEach((input) => {
+    input.addEventListener("change", () => {
+      if (input.checked && input.value === "no") {
+        razonNoPrepDiv?.classList.remove("oculto");
+      } else {
+        razonNoPrepDiv?.classList.add("oculto");
+      }
+    });
+  });
+
+  const satisfechoInputs = document.querySelectorAll('input[name="satisfecho"]');
+  const insatisfechoDiv = document.getElementById("insatisfaccion");
+  satisfechoInputs.forEach((input) => {
+    input.addEventListener("change", () => {
+      if (input.checked && input.value === "no") {
+        insatisfechoDiv?.classList.remove("oculto");
+      } else {
+        insatisfechoDiv?.classList.add("oculto");
+      }
+    });
+  });
+});
+</script>
+
+  </body>
+</html>      
